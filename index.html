@@ -118,15 +118,9 @@
                     <div class="form-group">
                         <span style="color: red;">* </span>
                         <label class="myLang" keyLang="timeSlot" for="data">Выберите время:</label>
-                        <select class="form-control" name="time" required>
-                            <option>09:00-09:45</option>
-                            <option>09:45-10:30</option>
-                            <option>10:30-11:15</option>
-                            <option>11:15-12:00</option>
-                            <option>12:00-12:45</option>
-                            <option>14:00-14:45</option>
-                            <option>14:45-15:30</option>
-                            <option>15:30-16:00</option>
+                        <select class="form-control" id="timeSelect" name="time" required>
+                            <option value="" disabled selected class="myLang" keyLang="chooseDateFirst">Сначала
+                                выберите дату</option>
                         </select>
                         <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
                     </div>
@@ -206,6 +200,10 @@
                     ...
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="saveBtn" class="btn btn-info myLang" keyLang="saveBtn"
+                        style="display:none;">Сохранить</button>
+                    <button type="button" id="shareBtn" class="btn btn-success myLang" keyLang="shareBtn"
+                        style="display:none;">Поделиться</button>
                     <button type="button" class="btn btn-primary myLang" keyLang="closeBtn"
                         data-dismiss="modal">Закрыть</button>
                 </div>
@@ -221,11 +219,12 @@
                 <div class="spinner-border text-light" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
+                <div id="loadingText" class="text-light" style="margin-top: 8px;"></div>
             </div>
         </div>
     </div>
     <div id="footer">
-        &copy; 2020 All rights reserved, developed by elifscript
+        &copy; <span id="footerYear"></span> All rights reserved, developed by elifscript
     </div>
 
 </body>
@@ -233,22 +232,32 @@
     $(document).ready(function () {
         getCalendarFullDays();
         initClick();
+        $('#footerYear').text((new Date()).getFullYear());
     });
 
     const EXEC_URL =
-        "https://script.google.com/macros/s/AKfycbxhy4OEIS3jgSbMhIF2GR307vbBqrTWhw5IpZeK7cbwVoyfiU_sFXr4ustM38X0RLMU/exec";
+        "https://script.google.com/macros/s/AKfycbxy5fTvhAlalJqCtLQSGzKbEiJWpTJEIzArM64nJiwdEH02FC8rs8ORTKru4nZLy2rT/exec";
+
+    function showLoading(text) {
+        $('#loadingText').text(text);
+        $('#myLoading').modal('show');
+    }
 
     function getCalendarFullDays() {
+        showLoading(getTranslation("loadingFullDays"));
         fetch(EXEC_URL + "?action=getFullDays")
             .then(res => res.json())
             .then(initDatePicker)
-            .catch(onFailureSent);
+            .catch(onFailureSent)
+            .finally(function () {
+                $('#myLoading').modal('hide');
+            });
     }
 
     function getFormatDateStr(currDate) {
         let day = currDate.getDate() < 10 ? "0" + String(currDate.getDate()) : currDate.getDate();
         let month = (currDate.getMonth() + 1) < 10 ? "0" + String((currDate.getMonth() + 1)) : (currDate.getMonth() +
-        1);
+            1);
         return day + "/" + month + "/" + currDate.getFullYear();
     }
 
@@ -277,7 +286,40 @@
                 return show;
             }
         };
-        date_input.datepicker(options);
+        date_input.datepicker(options).on('changeDate', function (e) {
+            loadFreeSlots(getFormatDateStr(e.date));
+        });
+    }
+
+    function loadFreeSlots(dateStr) {
+        var timeSelect = $('#timeSelect');
+        timeSelect.prop('disabled', true);
+        showLoading(getTranslation("loadingFreeSlots"));
+        fetch(EXEC_URL + "?action=getFreeSlots&date=" + encodeURIComponent(dateStr))
+            .then(res => res.json())
+            .then(function (slots) {
+                timeSelect.empty();
+                if (slots.length === 0) {
+                    timeSelect.append($('<option>', {
+                        value: "",
+                        disabled: true,
+                        selected: true,
+                        text: getTranslation("noSlots")
+                    }));
+                } else {
+                    slots.forEach(function (slot) {
+                        timeSelect.append($('<option>', {
+                            value: slot,
+                            text: slot
+                        }));
+                    });
+                }
+            })
+            .catch(onFailureSent)
+            .finally(function () {
+                $('#myLoading').modal('hide');
+                timeSelect.prop('disabled', false);
+            });
     }
 
     function initClick() {
@@ -286,7 +328,7 @@
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                $('#myLoading').modal('show');
+                showLoading(getTranslation("loadingSubmit"));
                 fetch(EXEC_URL + "?action=sendData", {
                         method: "POST",
                         body: JSON.stringify(getObjectData("myForm"))
@@ -318,8 +360,7 @@
     function onSuccessSent(value) {
         $('#myLoading').modal('hide');
         if (value.type == "Added") {
-            showModal(getTranslation("onSuccessReg"), value.message, "#91fa96");
-            downloadReg(value.message);
+            showModal(getTranslation("onSuccessReg"), value.message, "#91fa96", value.message + " ankarakonsulduk.com", value.message);
         } else if (value.type == "Exist") {
             showModal(getTranslation("onFailReg"), value.message, "#f56e6e");
         } else if (value.type == "Other") {
@@ -336,10 +377,29 @@
         showModal("Системная ошибка", error.message, "#f56e6e");
     }
 
-    function showModal(title, message, color) {
+    function showModal(title, message, color, shareText, saveText) {
         $('#modalTitle').html(title);
         $('#modalBody').html(message);
         $('#modalHeader').css("background-color", color);
+
+        var shareBtn = $('#shareBtn');
+        if (shareText && navigator.share) {
+            shareBtn.show().off('click').on('click', function () {
+                navigator.share({ title: getTranslation("onSuccessReg"), text: shareText });
+            });
+        } else {
+            shareBtn.hide();
+        }
+
+        var saveBtn = $('#saveBtn');
+        if (saveText) {
+            saveBtn.show().off('click').on('click', function () {
+                downloadReg(saveText);
+            });
+        } else {
+            saveBtn.hide();
+        }
+
         $('#myModal').modal('show');
     }
 
@@ -447,6 +507,36 @@
                 tr: "Zaman seçin:",
                 kg: "Убакытты тандаңыз:"
             },
+            chooseDateFirst: {
+                ru: "Сначала выберите дату",
+                en: "Choose a date first",
+                tr: "Önce bir tarih seçin",
+                kg: "Адегенде күндү тандаңыз"
+            },
+            noSlots: {
+                ru: "Нет свободных мест",
+                en: "No available slots",
+                tr: "Boş yer yok",
+                kg: "Бош орун жок"
+            },
+            loadingFullDays: {
+                ru: "Загрузка свободных дней...",
+                en: "Getting available days...",
+                tr: "Uygun günler yükleniyor...",
+                kg: "Бош күндөр жүктөлүүдө..."
+            },
+            loadingFreeSlots: {
+                ru: "Загрузка свободного времени...",
+                en: "Getting available time slots...",
+                tr: "Uygun saatler yükleniyor...",
+                kg: "Бош убакыттар жүктөлүүдө..."
+            },
+            loadingSubmit: {
+                ru: "Отправка данных...",
+                en: "Submitting...",
+                tr: "Gönderiliyor...",
+                kg: "Жөнөтүлүүдө..."
+            },
             goal: {
                 ru: "Выберите цель заявки:",
                 en: "Purpose of the application:",
@@ -525,6 +615,18 @@
                 tr: "Kapat",
                 kg: "Жап"
             },
+            shareBtn: {
+                ru: "Поделиться",
+                en: "Share",
+                tr: "Paylaş",
+                kg: "Бөлүшүү"
+            },
+            saveBtn: {
+                ru: "Сохранить",
+                en: "Save",
+                tr: "Kaydet",
+                kg: "Сактоо"
+            },
             onSuccessReg: {
                 ru: "Успешно зарегистрирован",
                 en: "Successfully registered",
@@ -560,8 +662,10 @@
         body.appendChild(targetImg)
 
         function onTempImageLoad(e) {
+            ctx.fillStyle = '#ffffff'
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(e.target, 0, 0)
-            targetImg.src = canvas.toDataURL()
+            targetImg.src = canvas.toDataURL('image/jpeg', 0.92)
             var a = document.createElement('a');
             a.href = targetImg.src;
             a.download = 'konsulduk_randevu.jpg';
