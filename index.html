@@ -5,6 +5,15 @@
     <title>Посольство Кыргызской Республики в Турецкой Республике</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="logo__gerb.min.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ankarakonsulduk.com/">
+    <meta property="og:title" content="Посольство Кыргызской Республики в Турецкой Республике">
+    <meta property="og:description" content="Онлайн запись на приём в Посольство Кыргызской Республики в Турецкой Республике">
+    <meta property="og:image" content="https://ankarakonsulduk.com/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="630">
+    <meta property="og:image:height" content="630">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css" />
@@ -360,7 +369,8 @@
     function onSuccessSent(value) {
         $('#myLoading').modal('hide');
         if (value.type == "Added") {
-            showModal(getTranslation("onSuccessReg"), value.message, "#91fa96", value.message + " ankarakonsulduk.com", value.message);
+            showModal(getTranslation("onSuccessReg"), value.message, "#91fa96", value.message + " ankarakonsulduk.com",
+                value.message);
         } else if (value.type == "Exist") {
             showModal(getTranslation("onFailReg"), value.message, "#f56e6e");
         } else if (value.type == "Other") {
@@ -385,7 +395,10 @@
         var shareBtn = $('#shareBtn');
         if (shareText && navigator.share) {
             shareBtn.show().off('click').on('click', function () {
-                navigator.share({ title: getTranslation("onSuccessReg"), text: shareText });
+                navigator.share({
+                    title: getTranslation("onSuccessReg"),
+                    text: shareText
+                });
             });
         } else {
             shareBtn.hide();
