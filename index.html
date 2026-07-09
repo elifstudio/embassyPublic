@@ -1,15 +1,574 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Посольство Кыргызской Республики в Турецкой Республике</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ru.min.js">
+    </script>
+    <style>
+        input[readonly].dataInput {
+            background-color: transparent;
+        }
+
+        .logo__img {
+            width: 80%;
+            height: 80%;
+            margin: 10px;
+        }
+
+        #footer {
+            background-color: white;
+            width: 100%;
+            text-align: center;
+            margin-top: 5px;
+            font-size: 11px;
+        }
+
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            color: #000000;
+            cursor: default;
+            background: #e0e0e0;
+        }
+    </style>
 </head>
 
-<body style="margin: 0px;">
-    <iframe style="position:absolute;height:97%;width:99%;border:none;margin:auto;"
-        src="https://script.google.com/macros/s/AKfycbxhy4OEIS3jgSbMhIF2GR307vbBqrTWhw5IpZeK7cbwVoyfiU_sFXr4ustM38X0RLMU/exec"></iframe>
+<body>
+
+    <div class="container h-100">
+        <div class="row"
+            style="background-image: url(https://raw.githubusercontent.com/elifstudio/embassyPublic/main/back_h.jpg);background-repeat: no-repeat;  background-size: cover; ">
+            <div class="row" style="margin: auto;">
+                <div class="col-3"> <img class="logo__img"
+                        src="https://raw.githubusercontent.com/elifstudio/embassyPublic/8f4a3dcf39ff2bf28e4389c8cc996d24e470f7c2/logo__gerb.min.svg">
+                </div>
+                <div class="col myLang" keyLang="title"
+                    style="color:white;margin: auto; font-size: 18px;font-weight: bold;">
+                    Посольство Кыргызской Республики <br>в Турецкой Республике
+                </div>
+                <div class="col-1 d-flex justify-content-center" style="margin-right: 8px;">
+                    <select id="langId" style="margin: auto; margin-right: 8px;">
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                        <option value="tr">TR</option>
+                        <option value="kg">KG</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row h-100 justify-content-center align-items-center"
+            style="background-image: url(https://github.com/elifstudio/embassyPublic/raw/main/bg__page-title.png);">
+            <div class="col-10 col-md-8 col-lg-6">
+                <form class="" id="myForm">
+                    <h2 class="myLang" keyLang="header">Запись на приём</h2>
+                    <div id="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="name" for="name">Имя:</label>
+                        <input type="text" class="form-control myLang" keyLang="nameHolder" id="name"
+                            placeholder="Имя..." name="name" required>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="surname" for="srnm">Фамилия:</label>
+                        <input type="text" class="form-control myLang" keyLang="surnameHolder" id="srnm"
+                            placeholder="Фамилия..." name="srnm" required>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="passport" for="pas">Номер паспорта:</label>
+                        <input type="text" class="form-control myLang" keyLang="passportHolder" id="pas"
+                            placeholder="Номер паспорта..." name="pas" required>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="phone" for="tel">Номер телефона:</label>
+                        <input type="number" class="form-control myLang" keyLang="phoneHolder" id="tel"
+                            placeholder="Номер телефона..." name="tel" required>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="myLang" keyLang="email" for="email">Email адрес: (необязательный)</label>
+                        <input type="email" class="form-control myLang" keyLang="emailHolder" id="email"
+                            placeholder="Email адрес..." name="email">
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <hr style="background-color: #59c5f0; border-width: 1px;">
+                    <div class="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="date" for="data">Дата на приём:</label>
+                        <input class="form-control dataInput myLang" keyLang="dateHolder" id="date" name="date"
+                            placeholder="ДД/ММ/ГГГГ" type="text" required readonly>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="timeSlot" for="data">Выберите время:</label>
+                        <select class="form-control" name="time" required>
+                            <option>09:00-09:45</option>
+                            <option>09:45-10:30</option>
+                            <option>10:30-11:15</option>
+                            <option>11:15-12:00</option>
+                            <option>12:00-12:45</option>
+                            <option>14:00-14:45</option>
+                            <option>14:45-15:30</option>
+                            <option>15:30-16:00</option>
+                        </select>
+                        <div class="invalid-feedback myLang" keyLang="errorMessage">Пожалуйста, заполните поле</div>
+                    </div>
+                    <div class="form-group" style="border-style: solid; padding: 4px; border: 1px solid #ced4da;">
+                        <span style="color: red;">* </span>
+                        <label class="myLang" keyLang="goal" for="data">Выберите цель заявки:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc1" name="doc1" id="defaultCheck1">
+                            <label class="form-check-label myLang" keyLang="doc1" for="defaultCheck1">
+                                Оформление общегражданского паспорт КР для совершеннолетних граждан КР
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc2" name="doc2" id="defaultCheck2">
+                            <label class="form-check-label myLang" keyLang="doc2" for="defaultCheck2">
+                                Оформление общегражданского паспорт КР для детей, не достигших 18-летнего возраста
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc3" name="doc3" id="defaultCheck3">
+                            <label class="form-check-label myLang" keyLang="doc3" for="defaultCheck3">
+                                Оформление свидетельства о рождении
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc4" name="doc4" id="defaultCheck4">
+                            <label class="form-check-label myLang" keyLang="doc4" for="defaultCheck4">
+                                Оформление Свидетельство на возвращение в Кыргызскую Республику
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc5" name="doc5" id="defaultCheck5">
+                            <label class="form-check-label myLang" keyLang="doc5" for="defaultCheck5">
+                                Легализация документов
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc6" name="doc6" id="defaultCheck6">
+                            <label class="form-check-label myLang" keyLang="doc6" for="defaultCheck6">
+                                Оформление визы Кыргызской Республики
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc7" name="doc7" id="defaultCheck7">
+                            <label class="form-check-label myLang" keyLang="doc7" for="defaultCheck7">
+                                Нотариальные действия
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="doc8" name="doc8" id="defaultCheck8"
+                                checked>
+                            <label class="form-check-label myLang" keyLang="doc8" for="defaultCheck8">
+                                И другие услуги
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" id="okayBtn" class="btn btn-primary btn-lg float-right myLang"
+                        keyLang="okayBtn">Отправить</button>
+                    <button type="button" id="infoBtn" class="btn btn-primary btn-lg float-left myLang"
+                        keyLang="infoBtn">Инфо</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="modalHeader">
+                    <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary myLang" keyLang="closeBtn"
+                        data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myLoading" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="text-center" style="margin: auto;">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        &copy; 2020 All rights reserved, developed by elifscript
+    </div>
+
 </body>
+<script>
+    $(document).ready(function () {
+        getCalendarFullDays();
+        initClick();
+    });
+
+    const EXEC_URL =
+        "https://script.google.com/macros/s/AKfycbxhy4OEIS3jgSbMhIF2GR307vbBqrTWhw5IpZeK7cbwVoyfiU_sFXr4ustM38X0RLMU/exec";
+
+    function getCalendarFullDays() {
+        fetch(EXEC_URL + "?action=getFullDays")
+            .then(res => res.json())
+            .then(initDatePicker)
+            .catch(onFailureSent);
+    }
+
+    function getFormatDateStr(currDate) {
+        let day = currDate.getDate() < 10 ? "0" + String(currDate.getDate()) : currDate.getDate();
+        let month = (currDate.getMonth() + 1) < 10 ? "0" + String((currDate.getMonth() + 1)) : (currDate.getMonth() +
+        1);
+        return day + "/" + month + "/" + currDate.getFullYear();
+    }
+
+    function initDatePicker(fullDays) {
+        var date_input = $('input[name="date"]'); //our date input has the name "date"
+        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+        let year = (new Date()).getFullYear();
+
+        var holidays = ["01/01/" + year, "07/01/" + year, "08/03/" + year, "21/03/" + year,
+            "01/05/" + year, "05/05/" + year, "09/05/" + year, "31/08/" + year
+        ]
+        const myFullDays = holidays.concat(fullDays);
+
+        var options = {
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            startDate: '-0d',
+            language: 'ru',
+            beforeShowDay: function (date) {
+                let day = date.getDay();
+                let string = getFormatDateStr(date);
+                let show = day != 6 && day != 0;
+                if (show) show = !myFullDays.includes(string);
+                return show;
+            }
+        };
+        date_input.datepicker(options);
+    }
+
+    function initClick() {
+        $("#okayBtn").click(function (event) {
+            if ($("#myForm").get(0).checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $('#myLoading').modal('show');
+                fetch(EXEC_URL + "?action=sendData", {
+                        method: "POST",
+                        body: JSON.stringify(getObjectData("myForm"))
+                    })
+                    .then(res => res.json())
+                    .then(onSuccessSent)
+                    .catch(onFailureSent);
+            }
+            $("#date").prop("readonly", false);
+            $("#myForm").get(0).classList.add('was-validated');
+        });
+        $("#date").click(function (event) {
+            $("#date").prop("readonly", true);
+        });
+        $("#infoBtn").click(function (event) {
+            let link = "https://drive.google.com/file/d/13XixT_ev7JOcjH2lVsJJ01GWkdCQYPs9/view?usp=sharing";
+            window.open(link);
+        });
+
+        $('#langId').on('change', function () {
+            $(".myLang").each(function (index) {
+                let value = $(this).attr("keyLang");
+                if (value.includes("Holder")) $(this).attr("placeholder", getTranslation(value));
+                else $(this).html(getTranslation(value));
+            });
+        });
+    }
+
+    function onSuccessSent(value) {
+        $('#myLoading').modal('hide');
+        if (value.type == "Added") {
+            showModal(getTranslation("onSuccessReg"), value.message, "#91fa96");
+            downloadReg(value.message);
+        } else if (value.type == "Exist") {
+            showModal(getTranslation("onFailReg"), value.message, "#f56e6e");
+        } else if (value.type == "Other") {
+            showModal(getTranslation("onFailReg"), value.message, "#f56e6e");
+        } else if (value.type == "TimeExceeded") {
+            showModal(getTranslation("onFailReg"), value.message, "#f56e6e");
+        } else {
+            showModal(getTranslation("onFailReg"), value.message || "Error", "#f56e6e");
+        }
+    }
+
+    function onFailureSent(error) {
+        $('#myLoading').modal('hide');
+        showModal("Системная ошибка", error.message, "#f56e6e");
+    }
+
+    function showModal(title, message, color) {
+        $('#modalTitle').html(title);
+        $('#modalBody').html(message);
+        $('#modalHeader').css("background-color", color);
+        $('#myModal').modal('show');
+    }
+
+    function getObjectData(id) {
+        var formdata = $("#" + id).serializeArray();
+        var data = {};
+        $(formdata).each(function (index, obj) {
+            data[obj.name] = (obj.name == "name" || obj.name == "srnm" || obj.name == "pas") ? obj.value
+                .toUpperCase() : obj.value;
+        });
+        data.lang = $("#langId").val();
+        return data;
+    }
+
+    function getTranslation(key) {
+        let lang = $("#langId").val();
+        let words = {
+            title: {
+                ru: "Посольство Кыргызской Республики <br>в Турецкой Республике",
+                en: "Embassy of the Kyrgyz Republic in the <br>Republic of Turkey",
+                tr: "Türkiye Cumhuriyeti Kırgız Cumhuriyeti <br>Büyükelçiliği",
+                kg: "Кыргыз Республикасынын Түркия <br>Республикасындагы Элчилиги"
+            },
+            header: {
+                ru: "Запись на приём",
+                en: "Appointment",
+                tr: "Randevu",
+                kg: "Дайындоо"
+            },
+            name: {
+                ru: "Имя:",
+                en: "Name:",
+                tr: "İsim:",
+                kg: "Аты-жөнү:"
+            },
+            nameHolder: {
+                ru: "Имя...",
+                en: "Name...",
+                tr: "İsim...",
+                kg: "Аты-жөнү..."
+            },
+            surname: {
+                ru: "Фамилия:",
+                en: "Surname:",
+                tr: "Soyadı:",
+                kg: "Фамилия:"
+            },
+            surnameHolder: {
+                ru: "Фамилия...",
+                en: "Surname...",
+                tr: "Soyadı...",
+                kg: "Фамилия..."
+            },
+            passport: {
+                ru: "Номер паспорта:",
+                en: "Passport ID:",
+                tr: "Pasaport Kimliği:",
+                kg: "Паспорттун номери:"
+            },
+            passportHolder: {
+                ru: "Номер паспорта...",
+                en: "Passport ID...",
+                tr: "Pasaport Kimliği...",
+                kg: "Паспорттун номери..."
+            },
+            phone: {
+                ru: "Номер телефона:",
+                en: "Phone number:",
+                tr: "Telefon numarası:",
+                kg: "Телефон номуру:"
+            },
+            phoneHolder: {
+                ru: "Номер телефона...",
+                en: "Phone number...",
+                tr: "Telefon numarası...",
+                kg: "Телефон номуру..."
+            },
+            email: {
+                ru: "Email адрес: (необязательный)",
+                en: "Email address: (optional)",
+                tr: "E-posta adresi: (opsiyonlu)",
+                kg: "Э-почта дареги: (милдеттүү эмес)"
+            },
+            emailHolder: {
+                ru: "Email адрес...",
+                en: "Email address...",
+                tr: "E-posta adresi...",
+                kg: "Э-почта дареги..."
+            },
+            date: {
+                ru: "Дата на приём:",
+                en: "Date of appointment:",
+                tr: "Randevu tarihi:",
+                kg: "Дайындоо күнү:"
+            },
+            dateHolder: {
+                ru: "ДД/ММ/ГГГГ",
+                en: "DD/MM/YYYY",
+                tr: "GG/AA/YYYY",
+                kg: "КК/АА/ЖЖЖЖ"
+            },
+            timeSlot: {
+                ru: "Выберите время:",
+                en: "Choose time:",
+                tr: "Zaman seçin:",
+                kg: "Убакытты тандаңыз:"
+            },
+            goal: {
+                ru: "Выберите цель заявки:",
+                en: "Purpose of the application:",
+                tr: "Gelişin amacını seçin:",
+                kg: "Келүү максатын тандаңыз:"
+            },
+            errorMessage: {
+                ru: "Пожалуйста, заполните поле",
+                en: "Please, fill in the blank",
+                tr: "Lütfen boşluğu doldurun",
+                kg: "Сураныч, бош орунду толтуруңуз"
+            },
+            doc1: {
+                ru: "Оформление общегражданского паспорт КР для совершеннолетних граждан КР",
+                en: "Registration of a general civil passport of the Kyrgyz Republic for adult citizens of the Kyrgyz Republic",
+                tr: "Kırgız Cumhuriyeti'nin yetişkin vatandaşları için Kırgız Cumhuriyeti genel sivil pasaportunun tescili",
+                kg: "Кыргыз Республикасынын эрезеге жеткен жарандары үчүн Кыргыз Республикасынын жалпы жарандык паспортун каттоо"
+            },
+            doc2: {
+                ru: "Оформление общегражданского паспорт КР для детей, не достигших 18-летнего возраста",
+                en: "Registration of a general civil passport of the Kyrgyz Republic for children under 18 years of age",
+                tr: "18 yaşın altındaki çocuklar için Kırgız Cumhuriyeti genel sivil pasaportunun kaydı",
+                kg: "18 жашка чейинки балдар үчүн Кыргыз Республикасынын жалпы жарандык паспортун каттоо"
+            },
+            doc3: {
+                ru: "Оформление свидетельства о рождении",
+                en: "Registration of a birth certificate",
+                tr: "Doğum belgesinin kaydı",
+                kg: "Туулгандыгы тууралуу күбөлүктү каттоо"
+            },
+            doc4: {
+                ru: "Оформление Свидетельство на возвращение в Кыргызскую Республику",
+                en: "Registration of the Certificate of return to the Kyrgyz Republic",
+                tr: "Kırgız Cumhuriyeti'ne iade belgesinin tescili",
+                kg: "Кыргыз Республикасына кайтып келүү күбөлүгүн каттоо"
+            },
+            doc5: {
+                ru: "Легализация документов",
+                en: "Legalization of documents",
+                tr: "Belgelerin yasallaştırılması",
+                kg: "Документтерди легалдаштыруу"
+            },
+            doc6: {
+                ru: "Оформление визы Кыргызской Республики",
+                en: "Visa processing of the Kyrgyz Republic",
+                tr: "Kırgız Cumhuriyeti vize işlemleri",
+                kg: "Кыргыз Республикасынын визаларын иштеп чыгуу"
+            },
+            doc7: {
+                ru: "Нотариальные действия",
+                en: "Notarial acts",
+                tr: "Noterlik işlemleri",
+                kg: "Нотариалдык иш-аракеттер"
+            },
+            doc8: {
+                ru: "И другие услуги",
+                en: "And other services",
+                tr: "Ve diğer hizmetler",
+                kg: "Жана башка кызматтар"
+            },
+            okayBtn: {
+                ru: "Отправить",
+                en: "Send",
+                tr: "Gönder",
+                kg: "Жөнөт"
+            },
+            infoBtn: {
+                ru: "Инфо",
+                en: "Info",
+                tr: "Bilgi",
+                kg: "Маалымат"
+            },
+            closeBtn: {
+                ru: "Закрыть",
+                en: "Close",
+                tr: "Kapat",
+                kg: "Жап"
+            },
+            onSuccessReg: {
+                ru: "Успешно зарегистрирован",
+                en: "Successfully registered",
+                tr: "Başarıyla kaydedildi",
+                kg: "Ийгиликтүү катталды"
+            },
+            onFailReg: {
+                ru: "Неудачно зарегистрирован",
+                en: "Unsuccessfully registered",
+                tr: "Başarısız kayıt",
+                kg: "Ийгиликсиз катталды"
+            },
+        };
+        return words[key][lang];
+    }
+
+    function downloadReg(message) {
+        const {
+            body
+        } = document
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        canvas.width = 200;
+        canvas.height = 100;
+
+        const tempImg = document.createElement('img')
+        tempImg.addEventListener('load', onTempImageLoad)
+        tempImg.src = 'data:image/svg+xml,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100">' +
+            '<foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="padding:10px;border-style:solid;">' +
+            message + ' ankarakonsulduk.com</div></foreignObject></svg>');
+        const targetImg = document.createElement('img')
+        body.appendChild(targetImg)
+
+        function onTempImageLoad(e) {
+            ctx.drawImage(e.target, 0, 0)
+            targetImg.src = canvas.toDataURL()
+            var a = document.createElement('a');
+            a.href = targetImg.src;
+            a.download = 'konsulduk_randevu.jpg';
+            a.click();
+            targetImg.remove();
+        }
+    }
+</script>
 
 </html>
